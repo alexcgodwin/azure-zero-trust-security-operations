@@ -1,0 +1,5 @@
+resource_group_name  = "rg-terraform-state"
+storage_account_name = "uniquestatestoragename"
+container_name       = "tfstate"
+key                  = "zero-trust/identity/dev.tfstate"
+use_azuread_auth     = true

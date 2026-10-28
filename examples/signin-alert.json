@@ -1,0 +1,11 @@
+{
+  "incident_id": "SOC-2026-EXAMPLE-002",
+  "alert_type": "repeated-signin-failures",
+  "severity": "Medium",
+  "environment": "dev",
+  "production_scope": false,
+  "approved_change": false,
+  "indicators": [
+    "multiple-source-ips"
+  ]
+}

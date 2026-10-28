@@ -1,0 +1,40 @@
+{
+  "privileged-role-assignment": {
+    "display_name": "[SOC] Azure privileged role assignment change",
+    "description": "Detect successful Azure RBAC role assignment writes. Requires AzureActivity subscription diagnostics.",
+    "severity": "High",
+    "query_file": "privileged-role-assignment.kql",
+    "frequency": "PT1H",
+    "period": "PT1H",
+    "tactics": [
+      "PrivilegeEscalation",
+      "Persistence"
+    ],
+    "enabled_by_default": false
+  },
+  "nsg-rule-change": {
+    "display_name": "[SOC] Network security rule modification",
+    "description": "Detect successful NSG security rule writes and deletes. Requires AzureActivity subscription diagnostics.",
+    "severity": "Medium",
+    "query_file": "nsg-rule-change.kql",
+    "frequency": "PT1H",
+    "period": "PT1H",
+    "tactics": [
+      "DefenseEvasion",
+      "LateralMovement"
+    ],
+    "enabled_by_default": false
+  },
+  "repeated-signin-failures": {
+    "display_name": "[SOC] Repeated Entra sign-in failures",
+    "description": "Detect repeated failed sign-ins over an hour. Requires Entra SigninLogs connector and license.",
+    "severity": "Medium",
+    "query_file": "repeated-signin-failures.kql",
+    "frequency": "PT1H",
+    "period": "PT1H",
+    "tactics": [
+      "CredentialAccess"
+    ],
+    "enabled_by_default": false
+  }
+}

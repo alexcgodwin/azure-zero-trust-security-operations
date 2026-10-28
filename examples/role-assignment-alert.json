@@ -1,0 +1,11 @@
+{
+  "incident_id": "SOC-2026-EXAMPLE-001",
+  "alert_type": "privileged-role-assignment",
+  "severity": "High",
+  "environment": "prod",
+  "production_scope": true,
+  "approved_change": false,
+  "indicators": [
+    "role-assignment-write"
+  ]
+}

@@ -1,0 +1,12 @@
+// MITRE ATT&CK: T1562.007. AzureActivity connector required.
+// Changes are not necessarily malicious; confirm against approved change window.
+AzureActivity
+| where TimeGenerated > ago(1h)
+| where OperationNameValue in~ (
+    "MICROSOFT.NETWORK/NETWORKSECURITYGROUPS/SECURITYRULES/WRITE",
+    "MICROSOFT.NETWORK/NETWORKSECURITYGROUPS/SECURITYRULES/DELETE"
+  )
+| where ActivityStatusValue =~ "Success"
+| extend Actor=tostring(Caller), SourceIP=tostring(CallerIpAddress)
+| summarize Changes=count(), LastSeen=max(TimeGenerated), Operations=make_set(OperationNameValue, 10) by Actor, SourceIP
+| project TimeGenerated=LastSeen, Actor, SourceIP, Changes, Operations

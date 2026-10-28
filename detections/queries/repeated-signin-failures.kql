@@ -1,0 +1,9 @@
+// MITRE ATT&CK: T1110. Entra ID SigninLogs table must be ingested.
+// Tune exclusions for known service accounts and known conditional access patterns.
+SigninLogs
+| where TimeGenerated > ago(1h)
+| where ResultType != "0"
+| where isnotempty(UserPrincipalName)
+| summarize Failures=count(), Latest=max(TimeGenerated), DistinctIPs=dcount(IPAddress), IPs=make_set(IPAddress, 10) by UserPrincipalName
+| where Failures >= 10 and DistinctIPs >= 2
+| project TimeGenerated=Latest, UserPrincipalName, Failures, DistinctIPs, IPs

@@ -1,0 +1,10 @@
+// MITRE ATT&CK: T1098 / T1078. AzureActivity connector required.
+// Baseline successful writes. Enrich with approver/change-ticket context.
+AzureActivity
+| where TimeGenerated > ago(1h)
+| where OperationNameValue =~ "MICROSOFT.AUTHORIZATION/ROLEASSIGNMENTS/WRITE"
+| where ActivityStatusValue =~ "Success"
+| extend Actor = tostring(Caller), SourceIP = tostring(CallerIpAddress)
+| summarize Changes=count(), LastSeen=max(TimeGenerated), Resources=make_set(ResourceId, 20) by Actor, SourceIP
+| where Changes >= 1
+| project TimeGenerated=LastSeen, Actor, SourceIP, Changes, Resources

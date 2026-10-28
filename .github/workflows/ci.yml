@@ -1,0 +1,57 @@
+name: Security Platform CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: security-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  python-and-detections:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate read-only triage and KQL catalog
+        run: python -m unittest discover -s tests -v
+      - name: Execute synthetic incident triage
+        run: python -m automation.triage examples/role-assignment-alert.json
+      - name: Repository hygiene
+        run: python scripts/check_repo.py
+
+  terraform:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        stack: [platform, identity]
+    defaults:
+      run:
+        working-directory: terraform/${{ matrix.stack }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "~> 1.9"
+          terraform_wrapper: false
+      - name: Check formatting
+        run: terraform fmt -check -recursive
+      - name: Initialize without Azure credentials or remote backend
+        run: terraform init -backend=false -input=false -no-color
+      - name: Validate Terraform against provider schema
+        run: terraform validate -no-color

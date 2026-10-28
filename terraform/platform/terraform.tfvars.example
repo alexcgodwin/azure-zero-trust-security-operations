@@ -1,0 +1,12 @@
+subscription_id = "00000000-0000-0000-0000-000000000000"
+location        = "canadacentral"
+name_prefix     = "ztsec"
+environment     = "dev"
+
+workspace_retention_days    = 30
+daily_quota_gb              = 1
+enable_sentinel             = false
+enable_detection_rules      = false
+enable_subscription_diagnostics = false
+enable_defender_plans       = false
+enable_governance_policy    = false

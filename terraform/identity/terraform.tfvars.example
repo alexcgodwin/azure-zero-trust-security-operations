@@ -1,0 +1,6 @@
+subscription_id      = "00000000-0000-0000-0000-000000000000"
+resource_group_name  = "rg-ztsec-dev-soc"
+location             = "canadacentral"
+github_owner         = "alexcgodwin"
+github_repository    = "azure-zero-trust-security-operations"
+github_environment   = "production"

@@ -1,0 +1,5 @@
+# Copy to backend.tf after creating a secure backend storage account.
+# Do NOT commit backend.hcl (real IDs may be sensitive operational metadata).
+terraform {
+  backend "azurerm" {}
+}
